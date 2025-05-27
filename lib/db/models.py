@@ -14,3 +14,19 @@ class Author(Base):
     books = relationship('Book', back_populates='author')# define a relationship with the Book model
     def __repr__(self):
         return f"<Author(id={self.id}, name='{self.name}')>"
+    
+class Book(Base):
+    __tablename__ = 'books' 
+    id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=False) # book title cannot be null
+    published_year = Column(Integer)
+    author_id = Column(Integer, ForeignKey('authors.id'), nullable=False) #foreign key to the authors table
+    genre_id = Column(Integer, ForeignKey('genres.id'), nullable=False) 
+
+    # define the relationships
+    author = relationship('Author', back_populates='books') 
+    genre = relationship('Genre', back_populates='books') 
+    loans = relationship('Loan', back_populates='book') 
+    def __repr__(self):
+        return f"<Book(id={self.id}, title='{self.title}', " \
+               f"author_id={self.author_id}, genre_id={self.genre_id})>"
