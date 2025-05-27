@@ -11,7 +11,8 @@ class Author(Base):
     __tablename__ = 'authors' #define the table name
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True, nullable=False)#author name must be unique and cannot be null
-    books = relationship('Book', back_populates='author')# define a relationship with the Book model
+    books = relationship('Book', back_populates='author', cascade="all, delete-orphan") # define a relationship with the Book model
+    # cascade="all, delete-orphan" ensures that when an author is deleted, all their books are also deleted
     def __repr__(self):
         return f"<Author(id={self.id}, name='{self.name}')>"
     
@@ -46,7 +47,7 @@ class Borrower(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     phone_number = Column(String, unique=True, nullable=False)# phone number must be unique
-    loans = relationship('Loan', back_populates='borrower')
+    loans = relationship('Loan', back_populates='borrower', cascade="all, delete-orphan")
     def __repr__(self):
         return f"<Borrower(id={self.id}, name='{self.name}', phone_number='{self.phone_number}')>"
         
